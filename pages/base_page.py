@@ -1,3 +1,4 @@
+from selenium.common import NoSuchElementException
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait as Wait
 
@@ -18,6 +19,19 @@ class BasePage:
         :param locator: локатор
         """
         return self.driver.find_element(*locator)
+
+    def is_element_present(self, locator):
+        """
+        Проверяет наличие элемента html-страницы по локатору.
+
+        :param locator:
+        :return: True, если элемент присутствует в DOM, иначе вернет False
+        """
+        try:
+            self.find(locator)
+        except NoSuchElementException:
+            return False
+        return True
 
     def element_is_visible(self, locator, timeout=5):
         """
