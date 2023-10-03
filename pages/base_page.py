@@ -8,11 +8,20 @@ class BasePage:
         self.url = url
 
     def open(self):
-        """Открывает страницу, хранящуюся в self.url."""
+        """Открывает страницу, адрес которой в self.url."""
         self.driver.get(self.url)
 
+    def find(self, locator):
+        """
+        Возвращает элемент html-страницы по локатору.
+
+        :param locator: локатор
+        """
+        return self.driver.find_element(*locator)
+
     def element_is_visible(self, locator, timeout=5):
-        """Возвращает элемент html-страницы по локатору.
+        """
+        Возвращает элемент html-страницы по локатору.
 
         :param locator: локатор
         :param timeout: время ожидания (в секундах) появления элемента в DOM
