@@ -7,3 +7,4 @@ class LoginPageLocators:
     LOGIN = (By.CSS_SELECTOR, '#textfield-1018-inputEl')
     PASSWORD = (By.CSS_SELECTOR, '#textfield-1019-inputEl')
     LOGIN_BUTTON = (By.CSS_SELECTOR, '#button-1022-btnInnerEl')
+    WARNING = (By.CSS_SELECTOR, '#box-1065')

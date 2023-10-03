@@ -33,7 +33,7 @@ class BasePage:
             return False
         return True
 
-    def element_is_visible(self, locator, timeout=5):
+    def wait_visible(self, locator, timeout=5):
         """
         Возвращает элемент html-страницы по локатору.
 
