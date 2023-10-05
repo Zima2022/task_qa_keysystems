@@ -1,12 +1,13 @@
-from selenium.common import NoSuchElementException
+import os
+
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait as Wait
 
 
 class BasePage:
-    def __init__(self, driver, url):
+    def __init__(self, driver):
         self.driver = driver
-        self.url = url
+        self.url = os.getenv('URL')
 
     def open(self):
         """Открывает страницу, адрес которой в self.url."""
@@ -20,24 +21,8 @@ class BasePage:
         """
         return self.driver.find_element(*locator)
 
-    def is_element_present(self, locator):
-        """
-        Проверяет наличие элемента html-страницы по локатору.
-
-        :param locator:
-        :return: True, если элемент присутствует в DOM, иначе вернет False
-        """
-        try:
-            self.find(locator)
-        except NoSuchElementException:
-            return False
-        return True
+    def is_element_visible(self, locator):
+        return self.find(locator).is_displayed()
 
     def wait_visible(self, locator, timeout=5):
-        """
-        Возвращает элемент html-страницы по локатору.
-
-        :param locator: локатор
-        :param timeout: время ожидания (в секундах) появления элемента в DOM
-         """
         return Wait(self.driver, timeout).until(EC.visibility_of_element_located(locator))
