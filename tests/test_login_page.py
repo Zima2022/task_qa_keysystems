@@ -3,7 +3,6 @@ import os
 import allure
 import pytest
 
-from locators.main_page_locators import MainPageLocators
 from pages.login_page import LoginPage
 
 URL = os.getenv('URL')
@@ -19,13 +18,14 @@ class TestLoginPage:
         login_page = LoginPage(driver)
         login_page.open()
         # login_page.error_window.close()
-        assert login_page.is_element_visible(login_page._login), 'Отсутствует поле ввода логина'
+        assert login_page.is_element_visible(login_page.login), 'Отсутствует поле ввода логина'
         assert login_page.is_element_visible(login_page._password), 'Отсутствует поле ввода пароля'
         login_page.fill_login(LOGIN)
         login_page.fill_password(PASSWORD)
         login_page.submit()
-        assert login_page.find(MainPageLocators.NAVIGATOR).is_enabled()
-        login_page.log_out()
+        main_page = login_page.main_page
+        assert main_page.find(main_page.navigator).is_enabled()
+        main_page.log_out()
 
     @allure.title('Проверка ввода НЕВЕРНЫХ учетных данных (логина и пароля)')
     @pytest.mark.parametrize('login, password', [
@@ -50,12 +50,13 @@ class TestLoginPage:
         login_page = LoginPage(driver)
         login_page.open()
         login_page.auth(LOGIN, PASSWORD)
-        login_page.collapse_navigator_directories()
-        navigator_directories = login_page.find_elements(MainPageLocators.NAVIGATOR_ELEMENTS)
+        main_page = login_page.main_page
+        main_page.collapse_navigator_directories()
+        navigator_directories = main_page.find_elements(main_page.navigator_elements)
         directories = ('УЧЕТ ВЫПОЛНЕННЫХ РАБОТ', 'БАГ-ТРЕКИНГ', 'ОТЧЕТЫ', 'СПРАВОЧНИКИ')
         actual_directories = [item.text for item in navigator_directories]
         assert all(directory in actual_directories for directory in directories)
-        login_page.log_out()
+        main_page.log_out()
 
     @allure.title('Проверка открытия режима "Ежедневный" из навигатора')
     def test_open_daily_mode(self, driver):
@@ -63,7 +64,8 @@ class TestLoginPage:
         login_page = LoginPage(driver)
         login_page.open()
         login_page.auth(LOGIN, PASSWORD)
-        login_page.open_daily_mode()
-        assert login_page.find(MainPageLocators.TAB_DAILY_MODE).text == 'Ежедневный'
-        assert login_page.is_element_visible(MainPageLocators.TAB_DAILY_MODE)
-        login_page.log_out()
+        main_page = login_page.main_page
+        main_page.open_daily_mode()
+        assert main_page.find(main_page.tab_daily_mode).text == 'Ежедневный'
+        assert main_page.is_element_visible(main_page.tab_daily_mode)
+        main_page.log_out()
