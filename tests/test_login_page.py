@@ -1,5 +1,6 @@
 import os
 
+import allure
 import pytest
 
 from locators.main_page_locators import MainPageLocators
@@ -10,7 +11,9 @@ LOGIN = os.getenv('LOGIN')
 PASSWORD = os.getenv('PASSWORD')
 
 
+@allure.suite('LoginPage')
 class TestLoginPage:
+    @allure.title('Проверка ввода верных учетных данных (логина и пароля)')
     def test_login_page_right_credentials(self, driver):
         driver.implicitly_wait(5)
         login_page = LoginPage(driver)
@@ -24,6 +27,7 @@ class TestLoginPage:
         assert login_page.find(MainPageLocators.NAVIGATOR).is_enabled()
         login_page.log_out()
 
+    @allure.title('Проверка ввода НЕВЕРНЫХ учетных данных (логина и пароля)')
     @pytest.mark.parametrize('login, password', [
         (LOGIN, '3'),
         ('wrong_login', PASSWORD),
@@ -40,6 +44,7 @@ class TestLoginPage:
         # login_page.wait_visible(login_page._warning)
         assert login_page.find(login_page._warning).text == 'Неверное имя пользователя или пароль.'
 
+    @allure.title('Проверка загрузки панели навигатора')
     def test_navigator(self, driver):
         driver.implicitly_wait(5)
         login_page = LoginPage(driver)
@@ -52,6 +57,7 @@ class TestLoginPage:
         assert all(directory in actual_directories for directory in directories)
         login_page.log_out()
 
+    @allure.title('Проверка открытия режима "Ежедневный" из навигатора')
     def test_open_daily_mode(self, driver):
         driver.implicitly_wait(10)
         login_page = LoginPage(driver)
