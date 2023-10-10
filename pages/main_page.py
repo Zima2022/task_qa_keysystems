@@ -1,3 +1,6 @@
+import time
+
+import allure
 from selenium.webdriver import ActionChains, Keys
 from selenium.webdriver.common.by import By
 
@@ -21,6 +24,8 @@ class MainPage(BasePage):
         self._daily_mode = (By.XPATH, '//tr[@data-qtip="Ежедневный"]')
         # Открытая вкладка "Ежедневный" на рабочем столе
         self._tab_daily_mode = (By.XPATH, '//a[@role="tab"]//span[text()="Ежедневный"]')
+        # Контент вкладки "Ежедневный"
+        self._content_daily_mode = (By.XPATH, '//div[@class="x-grid-scroll-container "]')
 
     @property
     def navigator(self):
@@ -34,11 +39,14 @@ class MainPage(BasePage):
     def tab_daily_mode(self):
         return self._tab_daily_mode
 
+    @allure.step('Завершаем сессию')
     def log_out(self):
         self.wait_visible(self._account).click()
-        self.wait_visible(self._account_quit).click()
+        # self.wait_visible(self._account_quit).click()
+        self.wait_clickable(self._account_quit).click()
         self.wait_visible(self._button_accept).click()
 
+    @allure.step('Сворачиваем все каталоги в панели навигатора')
     def collapse_navigator_directories(self):
         action = ActionChains(self.driver)
         navigator = self.wait_visible(self._navigator)
@@ -48,9 +56,14 @@ class MainPage(BasePage):
         action.send_keys(Keys.RETURN)
         action.perform()
 
+    @allure.step('Открываем режим "Ежедневный"')
     def open_daily_mode(self):
-        completed_work = self.find(self._completed_work)
-        ActionChains(self.driver).double_click(completed_work).perform()
+        completed_work = self.wait_visible(self._completed_work)
+        with allure.step('Двойной клик по директории "УЧЕТ ВЫПОЛНЕННЫХ РАБОТ" в панели навигатора'):
+            ActionChains(self.driver).double_click(completed_work).perform()
         daily_mode = self.find(self._daily_mode)
-        ActionChains(self.driver).double_click(daily_mode).perform()
-        self.wait_visible((By.XPATH, '//div[@class="x-grid-scroll-container "]'))
+        with allure.step('Двойной клик "Ежедневный" в панели навигатора'):
+            ActionChains(self.driver).double_click(daily_mode).perform()
+        with allure.step('Ожидаем загрузки содержимого вкладки "Ежедневный"'):
+            self.wait_visible(self._content_daily_mode)
+        time.sleep(5)

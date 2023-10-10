@@ -1,3 +1,4 @@
+import allure
 from selenium.webdriver.common.by import By
 
 from pages.base_page import BasePage
@@ -35,15 +36,23 @@ class LoginPage(BasePage):
     def main_page(self):
         return self._main_page
 
+    @property
+    def warning(self):
+        return self._warning
+
+    @allure.step('Заполняем поле логин')
     def fill_login(self, login):
         self.find(self._login).send_keys(login)
 
+    @allure.step('Заполняем поле пароль')
     def fill_password(self, password):
         self.find(self._password).send_keys(password)
 
+    @allure.step('Нажимаем кнопку Войти')
     def submit(self):
         self.find(self._login_button).click()
 
+    @allure.step('Проходим аутентификацию')
     def auth(self, login, password):
         # self.error_window.close()
         self.fill_login(login)

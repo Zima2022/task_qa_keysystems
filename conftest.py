@@ -13,5 +13,6 @@ def pytest_sessionstart(session):
 def driver():
     driver_service = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=driver_service)
+    # driver.implicitly_wait(5)
     yield driver
-    # driver.quit()
+    driver.quit()
