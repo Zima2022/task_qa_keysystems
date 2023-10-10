@@ -26,35 +26,38 @@ class LoginPage(BasePage):
 
     @property
     def login(self):
-        return self._login
+        return self.wait_visible(self._login)
 
     @property
     def password(self):
-        return self._password
+        return self.find(self._password)
 
     @property
     def main_page(self):
         return self._main_page
 
     @property
-    def warning(self):
-        return self._warning
+    def login_button(self):
+        return self.find(self._login_button)
 
-    @allure.step('Заполняем поле логин')
+    @property
+    def warning(self):
+        return self.find(self._warning)
+
+    @allure.step('Заполняем поле логин юзера {login}')
     def fill_login(self, login):
-        self.find(self._login).send_keys(login)
+        self.login.send_keys(login)
 
     @allure.step('Заполняем поле пароль')
     def fill_password(self, password):
-        self.find(self._password).send_keys(password)
+        self.password.send_keys(password)
 
     @allure.step('Нажимаем кнопку Войти')
     def submit(self):
-        self.find(self._login_button).click()
+        self.login_button.click()
 
-    @allure.step('Проходим аутентификацию')
+    @allure.step('Проходим аутентификацию для юзера {login}')
     def auth(self, login, password):
-        # self.error_window.close()
         self.fill_login(login)
         self.fill_password(password)
         self.submit()

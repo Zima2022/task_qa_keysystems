@@ -14,7 +14,9 @@ class MainPage(BasePage):
         self._account_quit = (By.XPATH, '//span[text()="Выйти"]')
         # Кнопка ОК диалогового окна для подтверждения выхода из аккаунта
         self._button_accept = (By.XPATH, '//div[@role="dialog"]//a[1]')
+        # Панель навигатора
         self._navigator = (By.CSS_SELECTOR, '#navigatorTree-body')
+        # Содержимое панели навигатора
         self._navigator_elements = (By.CSS_SELECTOR, '.x-tree-node-text span')
         # Каталог "УЧЕТ ВЫПОЛНЕННЫХ РАБОТ" в навигаторе
         self._completed_work = (By.XPATH, '//tr[@data-qtip="УЧЕТ ВЫПОЛНЕННЫХ РАБОТ"]')
@@ -27,28 +29,50 @@ class MainPage(BasePage):
 
     @property
     def navigator(self):
-        return self._navigator
+        return self.find(self._navigator)
 
     @property
     def navigator_elements(self):
-        return self._navigator_elements
+        return self.find_elements(self._navigator_elements)
+
+    @property
+    def account(self):
+        return self.wait_visible(self._account)
+
+    @property
+    def account_quit(self):
+        return self.wait_clickable(self._account_quit)
+
+    @property
+    def button_accept(self):
+        return self.wait_visible(self._button_accept)
+
+    @property
+    def completed_work(self):
+        return self.wait_visible(self._completed_work)
+
+    @property
+    def daily_mode(self):
+        return self.find(self._daily_mode)
+
+    @property
+    def content_daily_mode(self):
+        return self.wait_visible(self._content_daily_mode)
 
     @property
     def tab_daily_mode(self):
-        return self._tab_daily_mode
+        return self.wait_visible(self._tab_daily_mode)
 
     @allure.step('Завершаем сессию')
     def log_out(self):
-        self.wait_visible(self._account).click()
-        # self.wait_visible(self._account_quit).click()
-        self.wait_clickable(self._account_quit).click()
-        self.wait_visible(self._button_accept).click()
+        self.account.click()
+        self.account_quit.click()
+        self.button_accept.click()
 
     @allure.step('Сворачиваем все каталоги в панели навигатора')
     def collapse_navigator_directories(self):
         action = ActionChains(self.driver)
-        navigator = self.wait_visible(self._navigator)
-        action.context_click(navigator)
+        action.context_click(self.navigator)
         action.move_by_offset(5, 5)
         action.send_keys(Keys.ARROW_DOWN)
         action.send_keys(Keys.RETURN)
@@ -56,11 +80,9 @@ class MainPage(BasePage):
 
     @allure.step('Открываем режим "Ежедневный"')
     def open_daily_mode(self):
-        completed_work = self.wait_visible(self._completed_work)
         with allure.step('Двойной клик по директории "УЧЕТ ВЫПОЛНЕННЫХ РАБОТ" в панели навигатора'):
-            ActionChains(self.driver).double_click(completed_work).perform()
-        daily_mode = self.find(self._daily_mode)
+            ActionChains(self.driver).double_click(self.completed_work).perform()
         with allure.step('Двойной клик "Ежедневный" в панели навигатора'):
-            ActionChains(self.driver).double_click(daily_mode).perform()
+            ActionChains(self.driver).double_click(self.daily_mode).perform()
         with allure.step('Ожидаем загрузки содержимого вкладки "Ежедневный"'):
-            self.wait_visible(self._content_daily_mode)
+            assert self.content_daily_mode.is_displayed()
