@@ -17,23 +17,18 @@ class BasePage:
     def find(self, locator):
         """
         Возвращает web-элемент по локатору.
-
-        :param locator: локатор
         """
         return self.driver.find_element(*locator)
 
     def find_elements(self, locator):
         """
         Возвращает элементы по локатору.
-        :param locator:
-        :return:
         """
         return self.driver.find_elements(*locator)
 
     def is_element_visible(self, locator) -> bool:
         """
         Проверяет на видимость web-элемента на странице.
-        :param locator:
         """
         return self.find(locator).is_displayed()
 

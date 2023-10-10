@@ -3,7 +3,7 @@
 # from webdriver_manager.chrome import ChromeDriverManager
 #
 #
-# class WebDriver:
+# class TestWebDriver:
 #     def __init__(self):
 #         self.driver = None
 #

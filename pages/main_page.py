@@ -1,5 +1,3 @@
-import time
-
 import allure
 from selenium.webdriver import ActionChains, Keys
 from selenium.webdriver.common.by import By
@@ -66,4 +64,3 @@ class MainPage(BasePage):
             ActionChains(self.driver).double_click(daily_mode).perform()
         with allure.step('Ожидаем загрузки содержимого вкладки "Ежедневный"'):
             self.wait_visible(self._content_daily_mode)
-        time.sleep(5)

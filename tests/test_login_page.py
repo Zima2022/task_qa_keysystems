@@ -36,7 +36,6 @@ class TestLoginPage:
         driver.implicitly_wait(5)
         login_page = LoginPage(driver)
         login_page.open()
-        # login_page.error_window.close()
         login_page.fill_login(login)
         login_page.fill_password(password)
         login_page.submit()
