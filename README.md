@@ -54,14 +54,14 @@ cd task_qa_keysystems
 
 Создать и активировать виртуальное окружение:
 
-- для Linux и macOS
+- для Linux
 ```
-python3 -m venv venv
+python3.10 -m venv venv
 source venv/bin/activate
 ```
 - для Windows
 ```
-python -m venv venv
+py -3.10 -m venv venv 
 source venv/Scripts/activate
 ```
 Установить зависимости из файла requirements.txt:
