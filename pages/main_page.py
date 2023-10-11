@@ -1,3 +1,5 @@
+from time import sleep
+
 import allure
 from selenium.webdriver import ActionChains, Keys
 from selenium.webdriver.common.by import By
@@ -29,7 +31,7 @@ class MainPage(BasePage):
 
     @property
     def navigator(self):
-        return self.find(self._navigator)
+        return self.wait_visible(self._navigator)
 
     @property
     def navigator_elements(self):
@@ -71,8 +73,9 @@ class MainPage(BasePage):
 
     @allure.step('Сворачиваем все каталоги в панели навигатора')
     def collapse_navigator_directories(self):
+        navigator = self.navigator
         action = ActionChains(self.driver)
-        action.context_click(self.navigator)
+        action.context_click(navigator)
         action.move_by_offset(5, 5)
         action.send_keys(Keys.ARROW_DOWN)
         action.send_keys(Keys.RETURN)
@@ -86,3 +89,4 @@ class MainPage(BasePage):
             ActionChains(self.driver).double_click(self.daily_mode).perform()
         with allure.step('Ожидаем загрузки содержимого вкладки "Ежедневный"'):
             assert self.content_daily_mode.is_displayed()
+        sleep(1)

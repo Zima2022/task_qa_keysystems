@@ -38,3 +38,64 @@
   Приложение в которое вводится адрес, логин, пароль. 
   
   По результатам приложения - структурированный отчет о проведенном тестировании.
+
+
+## Как запустить проект:
+
+Клонировать репозиторий и перейти в него в командной строке:
+
+```
+git clone git@github.com:Zima2022/task_qa_keysystems.git
+```
+
+```
+cd task_qa_keysystems
+```
+
+Создать и активировать виртуальное окружение:
+
+- для Linux и macOS
+```
+python3 -m venv venv
+source venv/bin/activate
+```
+- для Windows
+```
+python -m venv venv
+source venv/Scripts/activate
+```
+Установить зависимости из файла requirements.txt:
+```
+pip install -r requirements.txt
+```
+В корне проекта создать файл `.env`. Прописать в нём переменные окружения URL, LOGIN и PASSWORD. Например:
+```
+URL=https://dsr01.keysystems.ru:5444/tracker_test/
+LOGIN=some_login
+PASSWORD=some_password
+```
+Отчет о тестировании будет создан с помочью Allure. Для работы надо установить Java OpenJDK 17 по [ссылке](https://learn.microsoft.com/en-us/java/openjdk/download#openjdk-17).
+
+[Документация](https://allurereport.org/docs/gettingstarted/installation/) по установке Allure.
+
+Запуск тестов с формированием отчетов с allure:
+```
+pytest --alluredir ./tests/allure-results
+```
+После успешного выполнения команды в директории `./tests/allure-results` появиться отчет в виде JSON файлов.
+Для их просмотра надо выполнить команду:
+```
+allure serve ./tests/allure-results/
+```
+В браузере откроется подробный отчет о выполненном тестировании.
+
+Тесты также можно запускать без установки Allure с помощью команды:
+```
+pytest
+```
+### Обратная связь, если есть вопросы
+telegram: @iamutin
+
+
+
+
