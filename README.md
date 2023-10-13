@@ -68,12 +68,8 @@ source venv/Scripts/activate
 ```
 pip install -r requirements.txt
 ```
-В корне проекта создать файл `.env`. Прописать в нём переменные окружения URL, LOGIN и PASSWORD. Например:
-```
-URL=https://dsr01.keysystems.ru:5444/tracker_test/
-LOGIN=some_login
-PASSWORD=some_password
-```
+В файле `test_data.py` ОБЯЗАТЕЛЬНО прописать LOGIN и PASSWORD. 
+
 Отчет о тестировании будет создан с помочью Allure. Для работы надо установить Java OpenJDK 17 по [ссылке](https://learn.microsoft.com/en-us/java/openjdk/download#openjdk-17).
 
 [Документация](https://allurereport.org/docs/gettingstarted/installation/) по установке Allure.
